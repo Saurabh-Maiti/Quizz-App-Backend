@@ -6,10 +6,10 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ nullable: true })
   firstName!: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName!: string;
 
   @Column({ unique: true })
@@ -23,4 +23,7 @@ export class UserEntity {
     onDelete: 'CASCADE',
   })
   role!: RoleEntity;
+
+  @Column({ default: false })
+  isOnboarded!: boolean;
 }
