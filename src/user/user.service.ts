@@ -54,4 +54,13 @@ export class UserService {
     const { hashedPassword, ...sanitizedUser } = savedUser;
     return sanitizedUser;
   }
+  async findUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+    return user;
+  }
+  async updateUser(user: UserEntity) {
+    await this.userRepository.save(user);
+  }
 }
