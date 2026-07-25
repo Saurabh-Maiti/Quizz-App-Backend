@@ -20,6 +20,7 @@ export class UserEntity {
 
   @ManyToOne(() => RoleEntity, (role) => role.users, {
     nullable: false,
+    onDelete: 'CASCADE',
   })
   role!: RoleEntity;
 }

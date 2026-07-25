@@ -8,6 +8,8 @@ export class RoleEntity {
     id!: string;
     @Column({ enum: RoleName, unique: true })
     name!: RoleName;
-    @OneToMany(() => UserEntity, (user) => user.role)
+    @OneToMany(() => UserEntity, (user) => user.role,{
+        onDelete: 'CASCADE',
+    })
     users!: UserEntity;
 }
