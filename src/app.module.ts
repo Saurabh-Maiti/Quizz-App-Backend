@@ -8,18 +8,25 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from './email/email.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      username: 'saurabhmaiti',
-      password: 'Saurabhmaiti@5934',
-      database: 'quizappbackend',
-      host: 'localhost',
-      port: 5432,
-      type: 'postgres',
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.getOrThrow<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT', 5432),
+        username: configService.getOrThrow<string>('DB_USERNAME'),
+        password: configService.getOrThrow<string>('DB_PASSWORD'),
+        database: configService.getOrThrow<string>('DB_DATABASE'),
+        autoLoadEntities: true,
+        synchronize: configService.get<string>('DB_SYNCHRONIZE') !== 'false',
+      }),
     }),
     AuthModule,
     UserModule,
