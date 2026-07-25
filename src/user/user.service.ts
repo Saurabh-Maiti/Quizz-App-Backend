@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/user.dto';
 import { RoleEntity } from '../role/entities/role.entity';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RoleEntity)
     private readonly roleRepository: Repository<RoleEntity>,
+    private readonly emailService: EmailService,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
     const role = await this.roleRepository.findOne({
@@ -44,6 +46,11 @@ export class UserService {
     });
 
     await this.userRepository.save(savedUser);
+    this.emailService.sendMail({
+      to: createUserDto.email,
+      subject: 'Welcome to Quiz App',
+      text: `Hello ${createUserDto.first_name},\n\nYour account has been created successfully. Your temporary password is: ${password}\n\nPlease change your password after logging in.`,
+    });
     const { hashedPassword, ...sanitizedUser } = savedUser;
     return sanitizedUser;
   }
