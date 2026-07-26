@@ -64,4 +64,16 @@ export class UserService {
   async updateUser(user: UserEntity) {
     await this.userRepository.save(user);
   }
+
+  async getUserProfile(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: { role: true },
+    });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const { hashedPassword, ...sanitizedUser } = user;
+    return sanitizedUser;
+  }
 }
