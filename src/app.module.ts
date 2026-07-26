@@ -9,6 +9,7 @@ import { EmailModule } from './email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PermissionModule } from './permission/permission.module';
 import { RedisModule } from './redis/redis.module';
+import { QuizModule } from './quiz/quiz.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { RedisModule } from './redis/redis.module';
     EmailModule,
     PermissionModule,
     RedisModule,
+    QuizModule,
   ],
   controllers: [AppController],
   providers: [AppService],
