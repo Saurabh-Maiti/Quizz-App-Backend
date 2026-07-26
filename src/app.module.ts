@@ -7,6 +7,8 @@ import { RoleModule } from './role/role.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from './email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PermissionModule } from './permission/permission.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     RoleModule,
     EmailModule,
+    PermissionModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
